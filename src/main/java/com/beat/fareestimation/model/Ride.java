@@ -15,6 +15,10 @@ public class Ride {
         return rideId;
     }
 
+    public LinkedList<Position> getPositions() {
+        return positions;
+    }
+
     public void addPosition(Position p) {
         positions.add(p);
     }

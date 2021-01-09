@@ -18,4 +18,8 @@ public class Position {
     public double getLongitude() {
         return longitude;
     }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
 }
