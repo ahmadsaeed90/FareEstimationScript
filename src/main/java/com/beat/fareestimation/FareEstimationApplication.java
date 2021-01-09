@@ -1,5 +1,6 @@
 package com.beat.fareestimation;
 
+import com.beat.fareestimation.service.InputReaderService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,25 +20,11 @@ public class FareEstimationApplication {
 			e.printStackTrace();
 		}*/
 
-		int count = 0;
+		var applicationContext = SpringApplication.run(FareEstimationApplication.class, args);
 
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("test.csv"));
-			String line;
-
-			while ((line = reader.readLine()) != null) {
-				count++;
-			}
-
-			System.out.println("count = " + count);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
-
-		SpringApplication.run(FareEstimationApplication.class, args);
+		var readerService = applicationContext.getBean(InputReaderService.class);
+		readerService.Read("test.csv");
+		System.out.println("main completed");
 	}
 
 	public static void generateTestFile() throws Exception {
