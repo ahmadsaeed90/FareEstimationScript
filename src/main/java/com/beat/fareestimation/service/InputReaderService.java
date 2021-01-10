@@ -2,6 +2,8 @@ package com.beat.fareestimation.service;
 
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,7 +14,11 @@ import java.util.concurrent.Executors;
 @Service
 public class InputReaderService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FareCalculatorService.class);
+
     public void Read(String fileName) {
+
+        logger.info("Reading file = " + fileName);
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
 
