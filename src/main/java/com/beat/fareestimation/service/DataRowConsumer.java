@@ -2,8 +2,7 @@ package com.beat.fareestimation.service;
 
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
-import com.beat.fareestimation.service.writer.FareWriter;
-import com.beat.fareestimation.service.writer.IFareWriter;
+import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

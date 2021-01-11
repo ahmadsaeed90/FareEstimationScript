@@ -1,12 +1,11 @@
-package com.beat.fareestimation.service.writer;
+package com.beat.fareestimation.repository.writer;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 public interface IFareWriter {
 
-    public void open(String fileName) throws IOException;
+    public void open(Writer writer) throws IOException;
 
     public void write(String msg) throws IOException;
 
