@@ -39,7 +39,7 @@ public class InputReaderService {
             reader = new BufferedReader(new FileReader(fileName));
             String line;
 
-            var rowConsumer = new Thread(new DataRowConsumer(queue, Executors.newFixedThreadPool(6), writer));
+            var rowConsumer = new Thread(new DataRowConsumer(queue, Executors.newFixedThreadPool(1), writer));
             rowConsumer.start();
 
             //Ride ride = null;
@@ -78,8 +78,8 @@ public class InputReaderService {
         finally {
            // if (executorService != null)
            //    executorService.shutdown();
-            if (writer != null)
-                writer.close();
+            //if (writer != null)
+            //    writer.close();
 
             if (reader != null)
                 reader.close();

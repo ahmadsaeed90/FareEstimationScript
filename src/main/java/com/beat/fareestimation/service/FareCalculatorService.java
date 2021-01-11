@@ -97,7 +97,7 @@ public class FareCalculatorService implements Runnable {
             writer.write(this.ride.getRideId() + "," + fare +  System.lineSeparator());
         }
         catch (Exception e) {
-            logger.error("Error in processing ride + " + this.ride.getRideId());
+            logger.error("Error in processing ride " + this.ride.getRideId(), e);
         }
     }
 }
