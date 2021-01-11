@@ -21,15 +21,18 @@ public class InputReaderService {
 
         logger.info("Reading file = " + fileName);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        //ExecutorService executorService = Executors.newFixedThreadPool(1);
 
         Queue<String> queue = new ConcurrentLinkedDeque<String>();
 
-        executorService.submit(new DataRowConsumer(queue, Executors.newFixedThreadPool(6)));
+        //executorService.submit(new DataRowConsumer(queue, Executors.newFixedThreadPool(6)));
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line;
+
+            var rowConsumer = new Thread(new DataRowConsumer(queue, Executors.newFixedThreadPool(6)));
+            rowConsumer.start();
 
             //Ride ride = null;
             //logger.info("Producer started");
@@ -58,16 +61,17 @@ public class InputReaderService {
             }
             queue.add("*");
             logger.info("Producer done");
+            rowConsumer.join();
 
             //executorService.submit(new FareCalculatorService(ride));
            // System.out.println("Reader completed");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error in reading input", e);
         }
         finally {
-            if (executorService != null)
-               executorService.shutdown();
+           // if (executorService != null)
+           //    executorService.shutdown();
         }
     }
 
