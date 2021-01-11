@@ -1,16 +1,17 @@
 package com.beat.fareestimation;
 
 import com.beat.fareestimation.service.InputReaderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 @SpringBootApplication
 public class FareEstimationApplication {
+
+	private static final Logger logger = LoggerFactory.getLogger(FareEstimationApplication.class);
 
 	public static void main(String[] args) {
 
@@ -27,9 +28,13 @@ public class FareEstimationApplication {
 		var applicationContext = SpringApplication.run(FareEstimationApplication.class, args);
 
 		if (!isTest) {
-			var readerService = applicationContext.getBean(InputReaderService.class);
-			readerService.Read("test-big.csv");
-
+			try {
+				var readerService = applicationContext.getBean(InputReaderService.class);
+				readerService.Read("test-medium.csv");
+			}
+			catch (Exception e) {
+				logger.error("Error in processing", e);
+			}
 		}
 		System.out.println("main completed");
 	}

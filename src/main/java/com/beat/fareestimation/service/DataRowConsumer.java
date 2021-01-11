@@ -2,12 +2,12 @@ package com.beat.fareestimation.service;
 
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
+import com.beat.fareestimation.service.writer.FareWriter;
+import com.beat.fareestimation.service.writer.IFareWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cglib.core.Block;
 
 import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 
 public class DataRowConsumer implements Runnable {
@@ -16,10 +16,12 @@ public class DataRowConsumer implements Runnable {
 
     private Queue<String> queue;
     private ExecutorService executorService;
+    private IFareWriter fareWriter;
 
-    public DataRowConsumer(Queue<String> sourceQueue, ExecutorService executorService) {
+    public DataRowConsumer(Queue<String> sourceQueue, ExecutorService executorService, IFareWriter writer) {
         this.queue = sourceQueue;
         this.executorService = executorService;
+        this.fareWriter = writer;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class DataRowConsumer implements Runnable {
                 }
                 else if (rideId != ride.getRideId()) {
                    // trigger batch calculation
-                    executorService.submit(new FareCalculatorService(ride));
+                    executorService.submit(new FareCalculatorService(ride, fareWriter));
                     //new FareCalculatorService(ride).run();
                     ride = new Ride(rideId);
                 }
