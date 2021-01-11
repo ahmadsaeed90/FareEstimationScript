@@ -9,16 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 
-@Service
-@Scope("singleton")
 public class FareCalculator {
 
-    public double calculateFare(Ride ride) {
+    public static double calculateFare(Ride ride) {
         removeDuplicates(ride.getPositions());
         return calculateFare(ride.getPositions());
     }
 
-    public double findSpeed(Position p1, Position p2) {
+    public static double findSpeed(Position p1, Position p2) {
         var dtHours = MathUtils.timeDifferenceInHours(p1.getTimestamp(), p2.getTimestamp());
         var dsKms = MathUtils.distanceInKm(p1.getLatitude(), p1.getLongitude(), p2.getLatitude(), p2.getLongitude());
 
@@ -26,7 +24,7 @@ public class FareCalculator {
         return speed;
     }
 
-    public double calculateFare(Position p1, Position p2) {
+    public static double calculateFare(Position p1, Position p2) {
 
         var dtHours = MathUtils.timeDifferenceInHours(p1.getTimestamp(), p2.getTimestamp());
         var dsKms = MathUtils.distanceInKm(p1.getLatitude(), p1.getLongitude(), p2.getLatitude(), p2.getLongitude());
@@ -42,7 +40,7 @@ public class FareCalculator {
         }
     }
 
-    public double calculateFare(LinkedList<Position> positions) {
+    public static double calculateFare(LinkedList<Position> positions) {
 
         double fare = Constants.BaseFare;
         Position prev = null;
@@ -61,7 +59,7 @@ public class FareCalculator {
         return Math.max(fare, Constants.MinRideFare);
     }
 
-    public void removeDuplicates(LinkedList<Position> positions) {
+    public static void removeDuplicates(LinkedList<Position> positions) {
         var it  = positions.listIterator();
         Position prev = null;
 
