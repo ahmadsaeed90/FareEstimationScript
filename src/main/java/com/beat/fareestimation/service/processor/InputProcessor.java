@@ -1,7 +1,7 @@
-package com.beat.fareestimation.service.reader;
+package com.beat.fareestimation.service.processor;
 
-import com.beat.fareestimation.service.DataRowConsumer;
-import com.beat.fareestimation.service.FareCalculatorService;
+import com.beat.fareestimation.service.PositionsConsumer;
+import com.beat.fareestimation.service.RideProcessor;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 @Service
 public class InputProcessor implements IInputProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(FareCalculatorService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RideProcessor.class);
     private IFareWriter fareWriter;
 
     @Autowired
@@ -38,7 +38,7 @@ public class InputProcessor implements IInputProcessor {
             reader = new BufferedReader(input);
             String line;
 
-            var rowConsumer = new Thread(new DataRowConsumer(queue, Executors.newFixedThreadPool(1), fareWriter));
+            var rowConsumer = new Thread(new PositionsConsumer(queue, Executors.newFixedThreadPool(6), fareWriter));
             rowConsumer.start();
 
             while ((line = reader.readLine()) != null) {

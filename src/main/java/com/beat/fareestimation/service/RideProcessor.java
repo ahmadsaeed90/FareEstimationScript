@@ -5,13 +5,13 @@ import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FareCalculatorService implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(FareCalculatorService.class);
+public class RideProcessor implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(RideProcessor.class);
 
     private Ride ride;
     private IFareWriter writer;
 
-    public FareCalculatorService(Ride ride, IFareWriter writer) {
+    public RideProcessor(Ride ride, IFareWriter writer) {
         this.ride = ride;
         this.writer = writer;
     }

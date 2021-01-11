@@ -1,4 +1,4 @@
-package com.beat.fareestimation.service.reader;
+package com.beat.fareestimation.service.processor;
 
 import java.io.InputStreamReader;
 import java.io.Writer;

@@ -9,15 +9,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 
-public class DataRowConsumer implements Runnable {
+public class PositionsConsumer implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataRowConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(PositionsConsumer.class);
 
     private Queue<String> queue;
     private ExecutorService executorService;
     private IFareWriter fareWriter;
 
-    public DataRowConsumer(Queue<String> sourceQueue, ExecutorService executorService, IFareWriter writer) {
+    public PositionsConsumer(Queue<String> sourceQueue, ExecutorService executorService, IFareWriter writer) {
         this.queue = sourceQueue;
         this.executorService = executorService;
         this.fareWriter = writer;
@@ -43,7 +43,7 @@ public class DataRowConsumer implements Runnable {
                 }
                 else if (rideId != ride.getRideId()) {
                    // trigger batch calculation
-                    executorService.submit(new FareCalculatorService(ride, fareWriter));
+                    executorService.submit(new RideProcessor(ride, fareWriter));
                     //new FareCalculatorService(ride).run();
                     ride = new Ride(rideId);
                 }
