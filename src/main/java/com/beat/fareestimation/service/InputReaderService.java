@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 
 @Service
 public class InputReaderService {
@@ -20,15 +24,24 @@ public class InputReaderService {
 
         logger.info("Reading file = " + fileName);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        //BlockingQueue<String> blockingQueue = new LinkedBlockingDeque<>();
+
+        //executorService.submit(new DataRowConsumer(blockingQueue));
+
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line;
 
             Ride ride = null;
-
+            //logger.info("Producer started");
             while ((line = reader.readLine()) != null) {
+
+                //blockingQueue.put(line);
+                //System.out.println("added to queue");
+
                 var tokens = line.split(",");
                 int rideId = Integer.parseInt(tokens[0]);
 
@@ -38,22 +51,25 @@ public class InputReaderService {
                 else if (rideId != ride.getRideId()) {
                    // trigger batch calculation
                     executorService.submit(new FareCalculatorService(ride));
+                    //new FareCalculatorService(ride).run();
                     ride = new Ride(rideId);
                 }
 
                 ride.addPosition(new Position(Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2]),
                         Long.parseLong(tokens[3])));
             }
+            //blockingQueue.add("*");
+            logger.info("Producer done");
 
             executorService.submit(new FareCalculatorService(ride));
-            System.out.println("Reader completed");
+           // System.out.println("Reader completed");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         finally {
             if (executorService != null)
-                executorService.shutdown();
+               executorService.shutdown();
         }
     }
 

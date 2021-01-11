@@ -37,3 +37,6 @@ out/
 .vscode/
 test.csv
 back-test - Copy.csv
+test-small.csv
+test-medium.csv
+test-big.csv

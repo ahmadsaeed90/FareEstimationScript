@@ -14,16 +14,23 @@ public class FareEstimationApplication {
 
 	public static void main(String[] args) {
 
-		/*try {
-			generateTestFile();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		boolean isTest = false;
+
+		if (isTest) {
+			try {
+				generateTestFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		var applicationContext = SpringApplication.run(FareEstimationApplication.class, args);
 
-		var readerService = applicationContext.getBean(InputReaderService.class);
-		readerService.Read("test.csv");
+		if (!isTest) {
+			var readerService = applicationContext.getBean(InputReaderService.class);
+			readerService.Read("test-medium.csv");
+
+		}
 		System.out.println("main completed");
 	}
 
@@ -31,8 +38,8 @@ public class FareEstimationApplication {
 
 		FileWriter writer = new FileWriter("test.csv");
 
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			writer.write(i + ",1,37.966625,23.728263,1405594974\n");
+		for (int i = 0; i < Integer.MAX_VALUE / 2; i++) {
+			writer.write(i + ",37.966625,23.728263,1405594974\n");
 		}
 
 		writer.close();

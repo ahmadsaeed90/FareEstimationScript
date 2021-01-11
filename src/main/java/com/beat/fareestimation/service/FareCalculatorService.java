@@ -22,9 +22,30 @@ public class FareCalculatorService implements Runnable {
     }
 
     public void removeDuplicates(LinkedList<Position> positions) {
+        var it  = positions.listIterator();
+        Position prev = null;
 
+        if (it.hasNext())
+            prev = it.next();
 
+        while (it.hasNext()) {
+            var current = it.next();
+            var speed = findSpeed(prev, current);
+            if (speed > Constants.InvalidSpeedThreshold) {
+                it.remove();
+            }
+            else {
+                prev = current;
+            }
+        }
+    }
 
+    public double findSpeed(Position p1, Position p2) {
+        var dtHours = MathUtils.timeDifferenceInHours(p1.getTimestamp(), p2.getTimestamp());
+        var dsKms = MathUtils.distanceInKm(p1.getLatitude(), p1.getLongitude(), p2.getLatitude(), p2.getLongitude());
+
+        var speed = dsKms / dtHours;
+        return speed;
     }
 
     public double calculateFare(Position p1, Position p2) {
@@ -44,8 +65,6 @@ public class FareCalculatorService implements Runnable {
     }
 
     public double calculateFare(LinkedList<Position> positions) {
-
-        // todo: remove duplicates
 
         double fare = Constants.BaseFare;
         Position prev = null;
@@ -75,8 +94,9 @@ public class FareCalculatorService implements Runnable {
             System.out.println("Thread" + Thread.currentThread().getId() + "::" + i);
         }*/
 
+        removeDuplicates(this.ride.getPositions());
         var fare = calculateFare(this.ride.getPositions());
 
-        System.out.println("Fare for ride " + ride.getRideId() + " = " + fare);
+        //System.out.println("Fare for ride " + ride.getRideId() + " = " + fare);
     }
 }
