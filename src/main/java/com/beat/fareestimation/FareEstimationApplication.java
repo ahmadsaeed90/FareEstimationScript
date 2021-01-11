@@ -28,7 +28,7 @@ public class FareEstimationApplication {
 
 		if (!isTest) {
 			var readerService = applicationContext.getBean(InputReaderService.class);
-			readerService.Read("test-medium.csv");
+			readerService.Read("test-big.csv");
 
 		}
 		System.out.println("main completed");

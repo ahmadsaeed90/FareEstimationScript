@@ -97,6 +97,6 @@ public class FareCalculatorService implements Runnable {
         removeDuplicates(this.ride.getPositions());
         var fare = calculateFare(this.ride.getPositions());
 
-        //System.out.println("Fare for ride " + ride.getRideId() + " = " + fare);
+        //logger.info("Fare for ride " + ride.getRideId() + " = " + fare);
     }
 }

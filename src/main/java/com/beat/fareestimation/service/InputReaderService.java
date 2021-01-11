@@ -10,10 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 
 @Service
 public class InputReaderService {
@@ -24,24 +21,23 @@ public class InputReaderService {
 
         logger.info("Reading file = " + fileName);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-        //BlockingQueue<String> blockingQueue = new LinkedBlockingDeque<>();
+        Queue<String> queue = new ConcurrentLinkedDeque<String>();
 
-        //executorService.submit(new DataRowConsumer(blockingQueue));
-
+        executorService.submit(new DataRowConsumer(queue, Executors.newFixedThreadPool(6)));
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line;
 
-            Ride ride = null;
+            //Ride ride = null;
             //logger.info("Producer started");
             while ((line = reader.readLine()) != null) {
 
-                //blockingQueue.put(line);
+                queue.add(line);
                 //System.out.println("added to queue");
-
+                /*
                 var tokens = line.split(",");
                 int rideId = Integer.parseInt(tokens[0]);
 
@@ -57,11 +53,13 @@ public class InputReaderService {
 
                 ride.addPosition(new Position(Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2]),
                         Long.parseLong(tokens[3])));
+
+                 */
             }
-            //blockingQueue.add("*");
+            queue.add("*");
             logger.info("Producer done");
 
-            executorService.submit(new FareCalculatorService(ride));
+            //executorService.submit(new FareCalculatorService(ride));
            // System.out.println("Reader completed");
 
         } catch (Exception e) {
