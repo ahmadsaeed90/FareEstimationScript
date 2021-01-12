@@ -41,7 +41,7 @@ class FareCalculatorTests {
 
 
     @Test
-    public void Test_calculateFare_idle_1() {
+    public void Test_calculateFare_idle() {
 
         var t1 = LocalDateTime.of(2021, 1, 12, 1, 0, 0);
         var t2 = LocalDateTime.of(2021, 1, 12, 5, 0, 0);
@@ -52,10 +52,40 @@ class FareCalculatorTests {
         Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
     }
 
-
     @Test
-    void Test_calculateRideFare() {
+    public void Test_calculateFare_idle_distance_lessthan_10km() {
 
+        var t1 = LocalDateTime.of(2021, 1, 12, 1, 0, 0);
+        var t2 = LocalDateTime.of(2021, 1, 12, 2, 0, 0);
+
+        var actual = this.fareCalculator.calculateFare(
+                new Position(25.188071794198134, 55.257561953497394, t1.getLong(ChronoField.MILLI_OF_DAY)),
+                new Position(25.11523277123887, 55.19968819883731, t2.getLong(ChronoField.MILLI_OF_DAY)));
+        Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
     }
 
+    /*
+    @Test
+    public void Test_calculateFare_moving_0_to_5am() {
+        // todo: add tests after finalizing calculation logic
+        var t1 = LocalDateTime.of(2021, 1, 12, 1, 10, 0);
+        var t2 = LocalDateTime.of(2021, 1, 12, 1, 50, 0);
+
+        var actual = this.fareCalculator.calculateFare(
+                new Position(25.188071794198134, 55.257561953497394, t1.getLong(ChronoField.MILLI_OF_DAY)),
+                new Position(25.11523277123887, 55.19968819883731, t2.getLong(ChronoField.MILLI_OF_DAY)));
+        Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
+    }*/
+
+    @Test
+    public void Test_calculateRideFare_2positions_idle() {
+        var positions = new LinkedList<Position>();
+        var t1 = LocalDateTime.of(2021, 1, 12, 1, 0, 0);
+        var t2 = LocalDateTime.of(2021, 1, 12, 2, 0, 0);
+
+        var actual = this.fareCalculator.calculateFare(
+                new Position(25.188071794198134, 55.257561953497394, t1.getLong(ChronoField.MILLI_OF_DAY)),
+                new Position(25.11523277123887, 55.19968819883731, t2.getLong(ChronoField.MILLI_OF_DAY)));
+        Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
+    }
 }

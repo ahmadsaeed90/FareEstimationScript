@@ -26,7 +26,7 @@ public class MathUtils {
 
     public static double timeDifferenceInHours(long t1, long t2) {
         int seconds = (int) (t2 - t1) / 1000;
-        int hours = seconds / 3600;
+        double hours = seconds / 3600.0;
         return hours;
     }
 
