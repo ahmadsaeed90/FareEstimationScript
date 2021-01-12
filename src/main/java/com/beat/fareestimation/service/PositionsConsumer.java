@@ -43,7 +43,7 @@ public class PositionsConsumer implements Runnable {
                 }
                 else if (rideId != ride.getRideId()) {
                    // trigger batch calculation
-                    executorService.submit(new RideProcessor(ride, fareWriter));
+                    executorService.submit(new RideProcessor(ride, fareWriter, new FareCalculator()));
                     //new FareCalculatorService(ride).run();
                     ride = new Ride(rideId);
                 }

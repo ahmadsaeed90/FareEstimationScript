@@ -1,5 +1,7 @@
 package com.beat.fareestimation.util;
 
+import com.beat.fareestimation.model.Position;
+
 public class MathUtils {
 
     private MathUtils() { /* No instantiation allowed */ }
@@ -26,5 +28,13 @@ public class MathUtils {
         int seconds = (int) (t2 - t1) / 1000;
         int hours = seconds / 3600;
         return hours;
+    }
+
+    public static double calculateSpeed(Position p1, Position p2) {
+        var dtHours = MathUtils.timeDifferenceInHours(p1.getTimestamp(), p2.getTimestamp());
+        var dsKms = MathUtils.distanceInKm(p1.getLatitude(), p1.getLongitude(), p2.getLatitude(), p2.getLongitude());
+
+        var speed = dsKms / dtHours;
+        return speed;
     }
 }
