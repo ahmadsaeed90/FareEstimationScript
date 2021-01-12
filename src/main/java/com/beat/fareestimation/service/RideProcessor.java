@@ -14,12 +14,12 @@ public class RideProcessor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RideProcessor.class);
 
     private Ride ride;
-    private IFareWriter writer;
+    private IFareWriter outputWriter;
     private IFareCalculator fareCalculator;
 
     public RideProcessor(Ride ride, IFareWriter writer, IFareCalculator calculator) {
         this.ride = ride;
-        this.writer = writer;
+        this.outputWriter = writer;
         this.fareCalculator = calculator;
     }
 
@@ -52,7 +52,7 @@ public class RideProcessor implements Runnable {
     public void run() {
         try {
             var fare = calculateFare(this.ride);
-            writer.write(this.ride.getRideId() + "," + fare +  System.lineSeparator());
+            outputWriter.write(this.ride.getRideId() + "," + fare +  System.lineSeparator());
         }
         catch (Exception e) {
             logger.error("Error in processing ride " + this.ride.getRideId(), e);
