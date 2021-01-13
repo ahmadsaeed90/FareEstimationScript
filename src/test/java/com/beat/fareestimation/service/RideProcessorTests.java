@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.LinkedList;
@@ -103,5 +104,21 @@ public class RideProcessorTests {
         var actual = rideProcessor.calculateFare(ride);
 
         Assertions.assertEquals(100.0, actual);
+    }
+
+    @Test
+    public void Test_run() throws IOException {
+
+        var t1 = LocalDateTime.of(2021, 1, 12, 1, 5, 0);
+        var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
+        var t3 = LocalDateTime.of(2021, 1, 12, 1, 15, 0);
+
+        ride.addPosition(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.MILLI_OF_DAY)));
+        ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
+        ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
+
+        rideProcessor.run();
+
+        Mockito.verify(outputWriter, Mockito.times(1)).write("1,100.0" + System.lineSeparator());
     }
 }
