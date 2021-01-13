@@ -1,7 +1,5 @@
 package com.beat.fareestimation.util;
 
-import com.beat.fareestimation.model.Position;
-
 import java.text.DecimalFormat;
 
 public class MathUtils {
