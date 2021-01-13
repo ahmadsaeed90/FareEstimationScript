@@ -32,7 +32,8 @@ public class RideProcessor implements Runnable {
 
         while (it.hasNext()) {
             var current = it.next();
-            var speed = MathUtils.calculateSpeed(prev, current);
+            var speed = MathUtils.calculateSpeed(prev.getLatitude(), prev.getLongitude(), prev.getTimestamp(),
+                    current.getLatitude(), current.getLongitude(), current.getTimestamp());
             if (speed > Constants.InvalidSpeedThreshold) {
                 it.remove();
             }

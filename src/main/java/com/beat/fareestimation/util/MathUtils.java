@@ -2,9 +2,13 @@ package com.beat.fareestimation.util;
 
 import com.beat.fareestimation.model.Position;
 
+import java.text.DecimalFormat;
+
 public class MathUtils {
 
     private MathUtils() { /* No instantiation allowed */ }
+
+    private static DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
@@ -13,7 +17,7 @@ public class MathUtils {
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
         dist = dist * 1.609344;
-        return (dist);
+        return dist;
     }
 
     public static double deg2rad(double deg) {
@@ -30,9 +34,9 @@ public class MathUtils {
         return hours;
     }
 
-    public static double calculateSpeed(Position p1, Position p2) {
-        var dtHours = MathUtils.timeDifferenceInHours(p1.getTimestamp(), p2.getTimestamp());
-        var dsKms = MathUtils.distanceInKm(p1.getLatitude(), p1.getLongitude(), p2.getLatitude(), p2.getLongitude());
+    public static double calculateSpeed(double lat1, double lon1, long t1, double lat2, double lon2, long t2) {
+        var dtHours = MathUtils.timeDifferenceInHours(t1, t2);
+        var dsKms = MathUtils.distanceInKm(lat1, lon1, lat2, lon2);
 
         var speed = dsKms / dtHours;
         return speed;
