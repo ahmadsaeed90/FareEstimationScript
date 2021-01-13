@@ -31,7 +31,7 @@ public class FareEstimationApplication {
 		if (!isTest) {
 			try {
 				var readerService = applicationContext.getBean(IInputProcessor.class);
-				readerService.process(new FileReader("test-big.csv"), new FileWriter("output.csv"));
+				readerService.process(new FileReader("test-small.csv"), new FileWriter("output.csv"));
 			}
 			catch (Exception e) {
 				logger.error("Error in processing", e);
