@@ -23,33 +23,27 @@ public class FareEstimationService implements IFareEstimationService {
     private static final Logger logger = LoggerFactory.getLogger(RideProcessingTask.class);
     private final IFareWriter fareWriter;
     private final IFareCalculator fareCalculator;
+    private final ExecutorService taskExecutorService;
 
     @Autowired
-    public FareEstimationService(IFareWriter writer, IFareCalculator fareCalculator) {
+    public FareEstimationService(IFareWriter writer, IFareCalculator fareCalculator, ExecutorService taskExecutorService) {
         this.fareWriter = writer;
         this.fareCalculator = fareCalculator;
+        this.taskExecutorService = taskExecutorService;
     }
 
     @Override
-    public void process(InputStreamReader input, Writer writer) throws Exception {
+    public void process(BufferedReader inputReader, Writer writer) throws Exception {
 
         logger.info("processing input stream");
 
-        BufferedReader reader = null;
-        ExecutorService executorService = null;
-
         try {
             fareWriter.open(writer);
-            reader = new BufferedReader(input);
-
-            // Create thread pool
-            executorService = Executors.newFixedThreadPool(50);
-
             Ride ride = null;
             String line;
 
             logger.info("Reading lines");
-            while ((line = reader.readLine()) != null) {
+            while ((line = inputReader.readLine()) != null) {
 
                 var tokens = line.split(",");
                 int rideId = Integer.parseInt(tokens[0]);
@@ -59,7 +53,7 @@ public class FareEstimationService implements IFareEstimationService {
                 }
                 else if (rideId != ride.getRideId()) {
                     // Submit a ride task to pool for execution
-                    executorService.execute(new RideProcessingTask(ride, fareWriter, fareCalculator));
+                    taskExecutorService.execute(new RideProcessingTask(ride, fareWriter, fareCalculator));
                     ride = new Ride(rideId);
                 }
 
@@ -68,17 +62,17 @@ public class FareEstimationService implements IFareEstimationService {
             }
 
             if (ride != null) {
-                executorService.execute(new RideProcessingTask(ride, fareWriter, fareCalculator));
+                taskExecutorService.execute(new RideProcessingTask(ride, fareWriter, fareCalculator));
             }
 
             logger.info("Input processor completed");
         } finally {
             logger.info("Shutting down executor");
-             if (executorService != null)
-                executorService.shutdown();
+             if (taskExecutorService != null)
+                taskExecutorService.shutdown();
 
-            if (reader != null)
-                reader.close();
+            if (inputReader != null)
+                inputReader.close();
             logger.info("Processing completed");
         }
     }

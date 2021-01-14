@@ -57,7 +57,7 @@ public class RideProcessingTask implements Runnable {
     public void run() {
         try {
             var fare = calculateFare(this.ride);
-            //outputWriter.write(this.ride.getRideId() + "," + fare +  System.lineSeparator());
+            outputWriter.write(this.ride.getRideId() + "," + fare +  System.lineSeparator());
         }
         catch (Exception e) {
             logger.error("Error in processing ride " + this.ride.getRideId(), e);

@@ -28,18 +28,6 @@ class FareCalculatorTests {
         fareCalculator = new FareCalculator();
     }
 
-    /*
-    @Test
-    public void Test_RemoveDuplicates() {
-        var list = new LinkedList<Position>();
-        list.add(new Position(25.1146703,55.1972893, System.currentTimeMillis()));
-        list.add(new Position(25.1696754,55.2189064, System.currentTimeMillis() + 1000));
-
-        fareCalculator.removeDuplicates();
-
-    }*/
-
-
     @Test
     public void Test_calculateFare_idle() {
 
