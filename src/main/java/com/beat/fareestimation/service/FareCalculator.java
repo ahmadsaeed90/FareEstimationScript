@@ -4,9 +4,11 @@ import com.beat.fareestimation.constant.Constants;
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
 import com.beat.fareestimation.util.MathUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 
+@Service
 public class FareCalculator implements IFareCalculator {
 
     public double calculateFare(Position p1, Position p2) {

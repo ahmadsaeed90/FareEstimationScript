@@ -6,19 +6,24 @@ import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Time;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PositionsConsumer implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(PositionsConsumer.class);
 
-    private Queue<String> queue;
+    //private Queue<String> queue;
+    private BlockingQueue<String> blockingQueue;
     private ExecutorService executorService;
     private IFareWriter fareWriter;
 
-    public PositionsConsumer(Queue<String> sourceQueue, ExecutorService executorService, IFareWriter writer) {
-        this.queue = sourceQueue;
+    public PositionsConsumer(BlockingQueue<String> sourceQueue, ExecutorService executorService, IFareWriter writer) {
+       // this.queue = sourceQueue;
+        this.blockingQueue = sourceQueue;
         this.executorService = executorService;
         this.fareWriter = writer;
     }
@@ -29,9 +34,13 @@ public class PositionsConsumer implements Runnable {
             Ride ride = null;
 
             while (true) {
-                var line = queue.poll();
-                if (line == null) continue;
+                var line = blockingQueue.poll(1000, TimeUnit.MILLISECONDS);
+                if (line == null) {
+                    logger.info("nothing to read");
+                    continue;
+                }
                 if (line.charAt(0) == '*') break;
+                //logger.info("msg received");
 
                 var tokens = line.split(",");
                 //logger.info("Received ride " + tokens[0]);
