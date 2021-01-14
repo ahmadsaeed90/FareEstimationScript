@@ -2,7 +2,6 @@ package com.beat.fareestimation.service;
 
 import com.beat.fareestimation.constant.Constants;
 import com.beat.fareestimation.model.Position;
-import com.beat.fareestimation.model.Ride;
 import com.beat.fareestimation.util.MathUtils;
 import org.springframework.stereotype.Service;
 

@@ -3,6 +3,7 @@ package com.beat.fareestimation.service;
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
 import com.beat.fareestimation.repository.writer.IFareWriter;
+import com.beat.fareestimation.task.RideProcessingTask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,9 @@ import java.util.LinkedList;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class RideProcessorTests {
+public class RideProcessingTaskTests {
 
-    private RideProcessor rideProcessor;
+    private RideProcessingTask rideProcessingTask;
     private Ride ride;
 
     @MockBean
@@ -34,7 +35,7 @@ public class RideProcessorTests {
     public void Setup() {
         ride = new Ride(1);
         Mockito.when(fareCalculator.calculateRideFare(ride.getPositions())).thenReturn(100.0);
-        rideProcessor = new RideProcessor(ride, outputWriter, fareCalculator);
+        rideProcessingTask = new RideProcessingTask(ride, outputWriter, fareCalculator);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class RideProcessorTests {
         positions.add(new Position(25.1146703,55.1972893, t1.getLong(ChronoField.MILLI_OF_DAY)));
         positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
 
-        rideProcessor.removeDuplicates(positions);
+        rideProcessingTask.removeDuplicates(positions);
 
         Assertions.assertEquals(1, positions.size());
         Assertions.assertEquals(25.1880996, positions.get(0).getLatitude());
@@ -65,7 +66,7 @@ public class RideProcessorTests {
         positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
         positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
 
-        rideProcessor.removeDuplicates(positions);
+        rideProcessingTask.removeDuplicates(positions);
 
         Assertions.assertEquals(1, positions.size());
         Assertions.assertEquals(25.1880996, positions.get(0).getLatitude());
@@ -83,7 +84,7 @@ public class RideProcessorTests {
         positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
         positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
 
-        rideProcessor.removeDuplicates(positions);
+        rideProcessingTask.removeDuplicates(positions);
 
         Assertions.assertEquals(2, positions.size());
         Assertions.assertEquals(25.1880996, positions.get(0).getLatitude());
@@ -101,7 +102,7 @@ public class RideProcessorTests {
         ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
         ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
 
-        var actual = rideProcessor.calculateFare(ride);
+        var actual = rideProcessingTask.calculateFare(ride);
 
         Assertions.assertEquals(100.0, actual);
     }
@@ -117,7 +118,7 @@ public class RideProcessorTests {
         ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
         ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
 
-        rideProcessor.run();
+        rideProcessingTask.run();
 
         Mockito.verify(outputWriter, Mockito.times(1)).write("1,100.0" + System.lineSeparator());
     }

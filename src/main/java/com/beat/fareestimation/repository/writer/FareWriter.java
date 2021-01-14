@@ -7,6 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Writer for writing output to file
+ */
 @Repository
 public class FareWriter implements IFareWriter {
 

@@ -8,7 +8,7 @@ public class Ride {
 
     public Ride(int rideId) {
         this.rideId = rideId;
-        positions = new LinkedList<Position>();
+        positions = new LinkedList<>();
     }
 
     public int getRideId() {
