@@ -2,7 +2,7 @@ package com.beat.fareestimation.task;
 
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
-import com.beat.fareestimation.queue.PositionsQueue;
+import com.beat.fareestimation.queue.IPositionsQueue;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import com.beat.fareestimation.service.FareCalculator;
 import org.slf4j.Logger;
@@ -21,12 +21,12 @@ public class PositionsProcessingTask implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(PositionsProcessingTask.class);
 
-    private PositionsQueue positionsQueue;
+    private IPositionsQueue positionsQueue;
     private ExecutorService executorService;
     private IFareWriter fareWriter;
 
     @Autowired
-    public PositionsProcessingTask(PositionsQueue positionsQueue, ExecutorService executorService, IFareWriter writer) {
+    public PositionsProcessingTask(IPositionsQueue positionsQueue, ExecutorService executorService, IFareWriter writer) {
         this.positionsQueue = positionsQueue;
         this.executorService = executorService;
         this.fareWriter = writer;
