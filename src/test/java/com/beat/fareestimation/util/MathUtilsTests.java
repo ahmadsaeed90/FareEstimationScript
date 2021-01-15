@@ -1,6 +1,5 @@
 package com.beat.fareestimation.util;
 
-import com.beat.fareestimation.model.Position;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,18 +33,18 @@ public class MathUtilsTests {
 
         double[][] data  = new double[][] {
                 {
-                    LocalDateTime.of(2021, 1, 12, 1, 0, 0).getLong(ChronoField.MILLI_OF_DAY),
-                    LocalDateTime.of(2021, 1, 12, 6, 0, 0).getLong(ChronoField.MILLI_OF_DAY),
+                    LocalDateTime.of(2021, 1, 12, 1, 0, 0).getLong(ChronoField.SECOND_OF_DAY),
+                    LocalDateTime.of(2021, 1, 12, 6, 0, 0).getLong(ChronoField.SECOND_OF_DAY),
                     5
                 },
                 {
-                        LocalDateTime.of(2021, 1, 12, 1, 10, 0).getLong(ChronoField.MILLI_OF_DAY),
-                        LocalDateTime.of(2021, 1, 12, 2, 40, 0).getLong(ChronoField.MILLI_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 1, 10, 0).getLong(ChronoField.SECOND_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 2, 40, 0).getLong(ChronoField.SECOND_OF_DAY),
                         1.5
                 },
                 {
-                        LocalDateTime.of(2021, 1, 12, 1, 10, 0).getLong(ChronoField.MILLI_OF_DAY),
-                        LocalDateTime.of(2021, 1, 12, 1, 20, 0).getLong(ChronoField.MILLI_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 1, 10, 0).getLong(ChronoField.SECOND_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 1, 20, 0).getLong(ChronoField.SECOND_OF_DAY),
                         0.16666666666666666
                 },
         };
@@ -61,9 +60,9 @@ public class MathUtilsTests {
         Object[][] data  = new Object[][] {
                 {
                         25.10963895691356, 55.21230692928784,
-                        LocalDateTime.of(2021, 1, 12, 1, 0, 0).getLong(ChronoField.MILLI_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 1, 0, 0).getLong(ChronoField.SECOND_OF_DAY),
                         25.159341783885257, 55.24449688651355,
-                        LocalDateTime.of(2021, 1, 12, 1, 20, 0).getLong(ChronoField.MILLI_OF_DAY),
+                        LocalDateTime.of(2021, 1, 12, 1, 20, 0).getLong(ChronoField.SECOND_OF_DAY),
                         19.218963666996267
                 },
         };
