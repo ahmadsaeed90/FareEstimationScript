@@ -1,5 +1,6 @@
 package com.beat.fareestimation.queue;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,9 @@ public class PositionsQueue implements IPositionsQueue {
 
     private BlockingQueue<List<String>> queue;
 
-    public PositionsQueue() {
-        queue = new ArrayBlockingQueue<>(2000);
+    @Autowired
+    public PositionsQueue(BlockingQueue<List<String>> queue) {
+        this.queue = queue;
     }
 
     public List<String> poll(long timeOut, TimeUnit unit) throws InterruptedException {
