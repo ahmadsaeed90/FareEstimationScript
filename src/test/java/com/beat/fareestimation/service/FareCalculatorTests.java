@@ -46,18 +46,20 @@ class FareCalculatorTests {
         Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
     }
 
-    /*
+
     @Test
     public void Test_calculateFare_moving_0_to_5am() {
-        // todo: add tests after finalizing calculation logic
-        var t1 = LocalDateTime.of(2021, 1, 12, 1, 10, 0);
-        var t2 = LocalDateTime.of(2021, 1, 12, 1, 50, 0);
+        var positions = new LinkedList<Position>();
+        var t1 = LocalDateTime.of(2021, 1, 12, 1, 0, 0);
+        var t2 = LocalDateTime.of(2021, 1, 12, 1, 30, 0);
 
-        var actual = this.fareCalculator.calculateFare(
-                new Position(25.188071794198134, 55.257561953497394, t1.getLong(ChronoField.INSTANT_SECONDS)),
-                new Position(25.11523277123887, 55.19968819883731, t2.getLong(ChronoField.INSTANT_SECONDS)));
-        Assertions.assertEquals( 11.90 * Duration.between(t1, t2).toHours(), actual );
-    }*/
+        positions.add(new Position(25.188071794198134, 55.257561953497394, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.11523277123887, 55.19968819883731, t2.getLong(ChronoField.SECOND_OF_DAY)));
+
+        var actual = this.fareCalculator.calculateRideFare(positions);
+
+        Assertions.assertEquals( 14.268861345146785, actual );
+    }
 
     @Test
     public void Test_calculateRideFare_2positions_idle() {
