@@ -1,5 +1,7 @@
 package com.beat.fareestimation.service;
 
+import com.beat.fareestimation.PositionsProcessor;
+import com.beat.fareestimation.queue.IPositionsQueue;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,10 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -26,14 +27,14 @@ public class FareEstimationServiceTests {
     private IFareWriter fareWriter;
 
     @MockBean
-    private IFareCalculator fareCalculator;
+    private IPositionsQueue positionsQueue;
 
     @MockBean
-    private ExecutorService executorService;
+    private PositionsProcessor positionsProcessor;
 
     @BeforeEach
     public void Setup() {
-        fareEstimationService = new FareEstimationService(fareWriter, fareCalculator, executorService);
+        fareEstimationService = new FareEstimationService(fareWriter, positionsQueue, positionsProcessor);
     }
 
     @Test
@@ -45,11 +46,13 @@ public class FareEstimationServiceTests {
                 .thenReturn("1,37.966627,23.728263,1405594966")
                 .thenReturn(null);
 
-        when(fareCalculator.calculateRideFare(any(LinkedList.class))).thenReturn(120.2);
-
         fareEstimationService.process(bufferedReader, mock(Writer.class));
 
         // verify if task was submitted to executor service
-        Mockito.verify(executorService, Mockito.times(1)).execute(any(Runnable.class));
+        Mockito.verify(positionsQueue, Mockito.times(1))
+                .offer(any(ArrayList.class), any(long.class), any(TimeUnit.class));
+
+        Mockito.verify(fareWriter, Mockito.times(1))
+                .close();
     }
 }

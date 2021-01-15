@@ -30,7 +30,7 @@ public class FareEstimationService implements IFareEstimationService {
 
     @Autowired
     public FareEstimationService(IFareWriter writer,
-                                 PositionsQueue positionsQueue,
+                                 IPositionsQueue positionsQueue,
                                  PositionsProcessor positionsProcessor) {
         this.fareWriter = writer;
         this.positionsQueue = positionsQueue;
