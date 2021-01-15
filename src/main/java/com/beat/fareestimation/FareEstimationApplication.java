@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 
 @SpringBootApplication
 public class FareEstimationApplication {
@@ -19,11 +20,12 @@ public class FareEstimationApplication {
 		// Setup spring context for auto-wiring
 		var applicationContext = SpringApplication.run(FareEstimationApplication.class, args);
 
-		//new BufferedReader(new InputStreamReader(System.in));
-
 		// Run the fare calculation process
 		var fareEstimationService = applicationContext.getBean(IFareEstimationService.class);
-		fareEstimationService.process(new BufferedReader(new FileReader("paths.csv")), new FileWriter("output.csv"));
+
+		// For reading from file uncomment below line and comment out second line
+		//fareEstimationService.process(new BufferedReader(new FileReader("paths.csv")), new FileWriter("output.csv"));
+		fareEstimationService.process(new BufferedReader(new InputStreamReader(System.in)), new FileWriter("output.csv"));
 	}
 }
 
