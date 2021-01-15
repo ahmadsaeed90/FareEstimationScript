@@ -1,8 +1,9 @@
 package com.beat.fareestimation.service;
 
-import com.beat.fareestimation.IPositionsQueue;
+import com.beat.fareestimation.constant.Constants;
+import com.beat.fareestimation.queue.IPositionsQueue;
 import com.beat.fareestimation.PositionsProcessor;
-import com.beat.fareestimation.PositionsQueue;
+import com.beat.fareestimation.queue.PositionsQueue;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import com.beat.fareestimation.task.RideProcessingTask;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,17 +25,14 @@ public class FareEstimationService implements IFareEstimationService {
 
     private static final Logger logger = LoggerFactory.getLogger(RideProcessingTask.class);
     private final IFareWriter fareWriter;
-    //private final ExecutorService taskExecutorService;
     private final IPositionsQueue positionsQueue;
     private final PositionsProcessor positionsProcessor;
 
     @Autowired
     public FareEstimationService(IFareWriter writer,
-                                 //ExecutorService taskExecutorService,
                                  PositionsQueue positionsQueue,
                                  PositionsProcessor positionsProcessor) {
         this.fareWriter = writer;
-        //this.taskExecutorService = taskExecutorService;
         this.positionsQueue = positionsQueue;
         this.positionsProcessor = positionsProcessor;
     }
@@ -53,42 +50,41 @@ public class FareEstimationService implements IFareEstimationService {
             consumer.start();
             logger.info("Reading lines");
 
-            int linesGroupSize = 500;
             int totalLines = 0;
 
-            var lines = new ArrayList<String>(linesGroupSize);
+            var lines = new ArrayList<String>(Constants.LinesBatchSize);
             String line;
             while ((line = inputReader.readLine()) != null) {
 
                 lines.add(line);
                 totalLines ++;
 
-                if (lines.size() >= linesGroupSize) {
-                    if (!positionsQueue.offer(lines, 5, TimeUnit.SECONDS))
-                        logger.info("cannot add lines group to queue, current size = " + positionsQueue.size());
+                if (lines.size() >= Constants.LinesBatchSize) {
+                    if (!positionsQueue.offer(lines, 1, TimeUnit.MINUTES)) {
+                        logger.info("cannot add lines batch to queue, stopping process, current size = " + positionsQueue.size());
+                        throw new Exception("Queue was full for 1 minute, stopping process");
+                    }
 
-                    lines = new ArrayList<>(linesGroupSize);
+                    lines = new ArrayList<>(Constants.LinesBatchSize);
                 }
             }
 
             if (!lines.isEmpty()) {
                 // Send last batch
-                positionsQueue.offer(lines, 5, TimeUnit.SECONDS);
+                positionsQueue.offer(lines, 1, TimeUnit.MINUTES);
             }
 
             // Now send termination signal
-            positionsQueue.offer(Arrays.asList("*"), 5, TimeUnit.SECONDS);
+            positionsQueue.offer(Arrays.asList("*"), 1, TimeUnit.MINUTES);
             logger.info("Input processor completed, total lines read from file: " + totalLines);
 
             // Wait for consumer to finish
             consumer.join();
 
+            logger.info("All Processing completed");
         } finally {
-            //awaitTerminationAfterShutdown(taskExecutorService);
-
             inputReader.close();
             fareWriter.close();
-            logger.info("All Processing completed");
         }
     }
 }

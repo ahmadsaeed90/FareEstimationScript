@@ -1,4 +1,4 @@
-package com.beat.fareestimation;
+package com.beat.fareestimation.queue;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

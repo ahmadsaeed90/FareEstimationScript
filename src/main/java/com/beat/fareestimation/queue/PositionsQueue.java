@@ -1,5 +1,6 @@
-package com.beat.fareestimation;
+package com.beat.fareestimation.queue;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Wrapper class for queue
  */
-@Service
+@Component
 public class PositionsQueue implements IPositionsQueue {
 
     private BlockingQueue<List<String>> queue;

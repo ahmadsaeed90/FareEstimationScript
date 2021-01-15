@@ -4,7 +4,6 @@ import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import com.beat.fareestimation.service.FareCalculator;
-import com.beat.fareestimation.task.RideProcessingTask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
