@@ -1,15 +1,14 @@
-package com.beat.fareestimation;
+package com.beat.fareestimation.task;
 
 import com.beat.fareestimation.model.Position;
 import com.beat.fareestimation.model.Ride;
 import com.beat.fareestimation.queue.PositionsQueue;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import com.beat.fareestimation.service.FareCalculator;
-import com.beat.fareestimation.task.RideProcessingTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,17 +16,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * Worker to read from positions queue, create ride processing tasks and assign to threads
  */
-@Service
-public class PositionsProcessor implements Runnable {
+@Component
+public class PositionsProcessingTask implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(PositionsProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(PositionsProcessingTask.class);
 
     private PositionsQueue positionsQueue;
     private ExecutorService executorService;
     private IFareWriter fareWriter;
 
     @Autowired
-    public PositionsProcessor(PositionsQueue positionsQueue, ExecutorService executorService, IFareWriter writer) {
+    public PositionsProcessingTask(PositionsQueue positionsQueue, ExecutorService executorService, IFareWriter writer) {
         this.positionsQueue = positionsQueue;
         this.executorService = executorService;
         this.fareWriter = writer;

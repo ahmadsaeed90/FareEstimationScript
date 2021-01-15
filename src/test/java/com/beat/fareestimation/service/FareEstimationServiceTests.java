@@ -1,6 +1,6 @@
 package com.beat.fareestimation.service;
 
-import com.beat.fareestimation.PositionsProcessor;
+import com.beat.fareestimation.task.PositionsProcessingTask;
 import com.beat.fareestimation.queue.IPositionsQueue;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +30,11 @@ public class FareEstimationServiceTests {
     private IPositionsQueue positionsQueue;
 
     @MockBean
-    private PositionsProcessor positionsProcessor;
+    private PositionsProcessingTask positionsProcessingTask;
 
     @BeforeEach
     public void Setup() {
-        fareEstimationService = new FareEstimationService(fareWriter, positionsQueue, positionsProcessor);
+        fareEstimationService = new FareEstimationService(fareWriter, positionsQueue, positionsProcessingTask);
     }
 
     @Test

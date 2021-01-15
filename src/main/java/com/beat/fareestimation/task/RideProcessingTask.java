@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 
 /**
- * Task to process a single ride
+ * Worker to process a single ride
  */
 public class RideProcessingTask implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RideProcessingTask.class);

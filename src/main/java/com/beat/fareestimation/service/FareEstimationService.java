@@ -2,8 +2,7 @@ package com.beat.fareestimation.service;
 
 import com.beat.fareestimation.constant.Constants;
 import com.beat.fareestimation.queue.IPositionsQueue;
-import com.beat.fareestimation.PositionsProcessor;
-import com.beat.fareestimation.queue.PositionsQueue;
+import com.beat.fareestimation.task.PositionsProcessingTask;
 import com.beat.fareestimation.repository.writer.IFareWriter;
 import com.beat.fareestimation.task.RideProcessingTask;
 import org.slf4j.Logger;
@@ -26,15 +25,15 @@ public class FareEstimationService implements IFareEstimationService {
     private static final Logger logger = LoggerFactory.getLogger(RideProcessingTask.class);
     private final IFareWriter fareWriter;
     private final IPositionsQueue positionsQueue;
-    private final PositionsProcessor positionsProcessor;
+    private final PositionsProcessingTask positionsProcessingTask;
 
     @Autowired
     public FareEstimationService(IFareWriter writer,
                                  IPositionsQueue positionsQueue,
-                                 PositionsProcessor positionsProcessor) {
+                                 PositionsProcessingTask positionsProcessingTask) {
         this.fareWriter = writer;
         this.positionsQueue = positionsQueue;
-        this.positionsProcessor = positionsProcessor;
+        this.positionsProcessingTask = positionsProcessingTask;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class FareEstimationService implements IFareEstimationService {
             fareWriter.open(writer);
 
             // Start consumer thread
-            var consumer = new Thread(positionsProcessor);
+            var consumer = new Thread(positionsProcessingTask);
             consumer.start();
             logger.info("Reading lines");
 
