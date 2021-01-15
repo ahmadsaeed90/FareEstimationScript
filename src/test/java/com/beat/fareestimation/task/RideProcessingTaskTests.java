@@ -45,13 +45,13 @@ public class RideProcessingTaskTests {
         var t1 = LocalDateTime.of(2021, 1, 12, 1, 5, 0);
         var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
 
-        positions.add(new Position(25.1146703,55.1972893, t1.getLong(ChronoField.MILLI_OF_DAY)));
-        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
+        positions.add(new Position(25.1146703,55.1972893, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.SECOND_OF_DAY)));
 
         rideProcessingTask.removeDuplicates(positions);
 
         Assertions.assertEquals(1, positions.size());
-        Assertions.assertEquals(25.1880996, positions.get(0).getLatitude());
+        Assertions.assertEquals(25.1146703, positions.get(0).getLatitude());
     }
 
     @Test
@@ -62,9 +62,9 @@ public class RideProcessingTaskTests {
         var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
         var t3 = LocalDateTime.of(2021, 1, 12, 1, 9, 0);
 
-        positions.add(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.MILLI_OF_DAY)));
-        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
-        positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
+        positions.add(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.SECOND_OF_DAY)));
 
         rideProcessingTask.removeDuplicates(positions);
 
@@ -80,9 +80,9 @@ public class RideProcessingTaskTests {
         var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
         var t3 = LocalDateTime.of(2021, 1, 12, 1, 15, 0);
 
-        positions.add(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.MILLI_OF_DAY)));
-        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
-        positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
+        positions.add(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.SECOND_OF_DAY)));
+        positions.add(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.SECOND_OF_DAY)));
 
         rideProcessingTask.removeDuplicates(positions);
 
@@ -98,9 +98,9 @@ public class RideProcessingTaskTests {
         var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
         var t3 = LocalDateTime.of(2021, 1, 12, 1, 15, 0);
 
-        ride.addPosition(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.MILLI_OF_DAY)));
-        ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
-        ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
+        ride.addPosition(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.SECOND_OF_DAY)));
+        ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.SECOND_OF_DAY)));
 
         var actual = rideProcessingTask.calculateFare(ride);
 
@@ -114,9 +114,9 @@ public class RideProcessingTaskTests {
         var t2 = LocalDateTime.of(2021, 1, 12, 1, 7, 0);
         var t3 = LocalDateTime.of(2021, 1, 12, 1, 15, 0);
 
-        ride.addPosition(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.MILLI_OF_DAY)));
-        ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.MILLI_OF_DAY)));
-        ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.MILLI_OF_DAY)));
+        ride.addPosition(new Position(25.1880996,55.2562806, t1.getLong(ChronoField.SECOND_OF_DAY)));
+        ride.addPosition(new Position(25.1696754,55.2189064, t2.getLong(ChronoField.SECOND_OF_DAY)));
+        ride.addPosition(new Position(25.1146703,55.1972893, t3.getLong(ChronoField.SECOND_OF_DAY)));
 
         rideProcessingTask.run();
 
